@@ -7,7 +7,8 @@ import React from "react";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { FaFacebook, FaTwitterSquare } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
-
+import { SiLeetcode } from "react-icons/si";
+import Button from "../ui/button";
 function HeroSection({ profile }) {
 
   return (
@@ -50,6 +51,13 @@ function HeroSection({ profile }) {
               <FaFacebook size={24} />
             </Link>
             <Link
+              href={userData.leetcode}
+              target='_blank'
+              className="transition-all text-teal-500 hover:scale-125 duration-300"
+            >
+              <SiLeetcode size={24} />
+            </Link>
+            <Link
               href={`https://x.com/${profile.twitter_username}`}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -59,12 +67,11 @@ function HeroSection({ profile }) {
           </div>
 
           <div className="w-full justify-center flex items-center gap-3 mt-6">
-            <Link target="_blank" href={userData.resume} className="bg-gradient-to-r to-pink-500 from-violet-600 p-[1px] rounded-full transition-all duration-300 hover:from-pink-500 hover:to-violet-600">
-              <button className="px-3 text-xs md:px-4 py-2 md:py-2.5 bg-[#0d1224] rounded-full border-none text-center font-medium uppercase tracking-wider text-[#ffff] no-underline transition-all duration-200 ease-out  md:font-semibold flex items-center gap-1 hover:gap-3">
-                <span>Get Resume</span>
-                <MdDownload size={16} />
-              </button>
-            </Link>
+            <Button
+              href={userData.resume}
+              title="Get Resume">
+              <MdDownload size={16} />
+            </Button>
           </div>
 
         </div>

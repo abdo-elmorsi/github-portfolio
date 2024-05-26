@@ -1,11 +1,12 @@
 import { userData } from "@/data/user-data";
-import Contributions from "./components/contributions";
-import HeroSection from "./components/hero-section";
-import GitLanguage from "./components/language";
-import Projects from "./components/projects";
-import Rank from "./components/rank";
-import GitStats from "./components/stats";
 import Navbar from "./components/navbar";
+import HeroSection from "./components/hero-section";
+import GitStats from "./components/stats";
+import Projects from "./components/projects";
+import GitLanguage from "./components/language";
+import Rank from "./components/rank";
+import Contributions from "./components/contributions";
+import Contact from "./components/contact";
 
 // Revalidate every 1 day (86400 seconds)
 const REVALIDATE_PERIOD = 86400;
@@ -37,7 +38,6 @@ async function getGitProjects() {
 export default async function Home() {
     const profile = await getGitProfile();
     const projects = await getGitProjects();
-console.log(projects);
     return (
         <>
             <Navbar name={profile.name} />
@@ -47,6 +47,7 @@ console.log(projects);
             <GitLanguage />
             <Rank />
             <Contributions />
+            <Contact />
         </>
     );
 }
