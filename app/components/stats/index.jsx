@@ -6,7 +6,7 @@ import SectionTitle from "../helper/section-title";
 
 function GitStats() {
   return (
-    <div id="stats" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
+    <div id="statistics" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
       <SectionTitle title="GitHub Statistics" />
 
       <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-5">
