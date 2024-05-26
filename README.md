@@ -33,7 +33,7 @@ If you find any issues or have suggestions for improving the website, feel free 
 ## Contact
 If you have any questions or would like to get in touch with Abdelrahman, you can reach him at:
 
-- Email: abdelrahman.elmorsi@example.com
+- Email: abdelrahmandiv@gmail.com
 - LinkedIn: https://www.linkedin.com/in/abdelrahman-a-morsi-163263205
 - GitHub: https://github.com/abdo-elmorsi
 
