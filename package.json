@@ -15,7 +15,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-github-calendar": "^4.1.3",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "autoprefixer": "latest",

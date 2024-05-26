@@ -37,7 +37,7 @@ async function getGitProjects() {
 export default async function Home() {
     const profile = await getGitProfile();
     const projects = await getGitProjects();
-    console.log({ profile });
+
     return (
         <>
             <Navbar name={profile.name} />
