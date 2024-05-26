@@ -16,7 +16,7 @@ function ContactMe() {
     console.log({ name, email, message });
   };
   return (
-    <div id="ContactMe" className="border-t my-12 lg:my-24 border-[#25213b]">
+    <div id="contact" className="border-t my-12 lg:my-24 border-[#25213b]">
       <SectionTitle title="Contact Me" />
 
       <div className="w-full flex justify-center py-12">
