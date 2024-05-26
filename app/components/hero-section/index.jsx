@@ -1,6 +1,6 @@
 // @flow strict
 
-import { userData } from "@/data/user-data";
+import { userData } from "@/app/assets/user-data";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

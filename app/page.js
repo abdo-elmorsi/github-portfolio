@@ -1,39 +1,13 @@
-import { userData } from "@/data/user-data";
-import Navbar from "./components/navbar";
-import HeroSection from "./components/hero-section";
-import GitStats from "./components/stats";
-import Projects from "./components/projects";
-import GitLanguage from "./components/language";
-import Rank from "./components/rank";
-import Contributions from "./components/contributions";
-import Contact from "./components/contact";
+import Navbar from "@/app/components/navbar";
+import HeroSection from "@/app/components/hero-section";
+import GitStats from "@/app/components/stats";
+import Projects from "@/app/components/projects";
+import GitLanguage from "@/app/components/language";
+import Rank from "@/app/components/rank";
+import Contributions from "@/app/components/contributions";
+import Contact from "@/app/components/contact";
+import { getGitProfile, getGitProjects } from "./actions";
 
-// Revalidate every 1 day (86400 seconds)
-const REVALIDATE_PERIOD = 86400;
-
-async function getGitProfile() {
-    const res = await fetch(
-        `https://api.github.com/users/${userData.githubUser}`,
-        { next: { revalidate: REVALIDATE_PERIOD } }
-    );
-    if (!res.ok) {
-        throw new Error("Failed to fetch data");
-    }
-
-    return await res.json();
-}
-
-async function getGitProjects() {
-    const res = await fetch(
-        `https://api.github.com/search/repositories?q=user:${userData.githubUser}+fork:false&sort=updated&per_page=10&type=Repositories`,
-        { next: { revalidate: REVALIDATE_PERIOD } }
-    );
-    if (!res.ok) {
-        throw new Error("Failed to fetch data");
-    }
-
-    return await res.json();
-}
 
 export default async function Home() {
     const profile = await getGitProfile();

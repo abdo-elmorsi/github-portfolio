@@ -1,5 +1,5 @@
 // @flow strict
-import { userData } from '@/data/user-data';
+import { userData } from '@/app/assets/user-data';
 import Link from 'next/link';
 import { CgGitFork } from "react-icons/cg";
 import { IoStar } from "react-icons/io5";
