@@ -5,7 +5,7 @@ import { userData } from "@/app/assets/user-data";
 import { template } from "@/app/assets/email-template";
 
 // Revalidate every 1 day (86400 seconds)
-const REVALIDATE_PERIOD = 10;
+const REVALIDATE_PERIOD = 60 * 60;
 
 export async function sendEmail({ name, email, message }) {
     const transporter = nodemailer.createTransport({
@@ -55,7 +55,7 @@ export async function getGitProfile() {
             `https://api.github.com/users/${userData.githubUser}`,
             {
                 headers: { "Content-Type": "application/json" },
-                next: { revalidate: REVALIDATE_PERIOD }
+                next: { revalidate: REVALIDATE_PERIOD },
             }
         );
         if (!res.ok) {
@@ -76,7 +76,7 @@ export async function getGitProjects() {
             `https://api.github.com/search/repositories?q=user:${userData.githubUser}+fork:false&sort=updated&per_page=10&type=Repositories`,
             {
                 headers: { "Content-Type": "application/json" },
-                next: { revalidate: REVALIDATE_PERIOD }
+                next: { revalidate: REVALIDATE_PERIOD },
             }
         );
         if (!res.ok) {
