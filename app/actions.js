@@ -5,7 +5,7 @@ import { userData } from "@/app/assets/user-data";
 import { template } from "@/app/assets/email-template";
 
 // Revalidate every 1 day (86400 seconds)
-const REVALIDATE_PERIOD = 86400;
+const REVALIDATE_PERIOD = 10;
 
 export async function sendEmail({ name, email, message }) {
     const transporter = nodemailer.createTransport({
@@ -21,7 +21,7 @@ export async function sendEmail({ name, email, message }) {
         await transporter.sendMail({
             from: email,
             to: process.env.EMAIL,
-            subject: `a new message from ${email}`,
+            subject: `A new message from ${email}`,
             html: body,
         });
         return { success: true };
@@ -53,7 +53,10 @@ export async function getGitProfile() {
     try {
         const res = await fetch(
             `https://api.github.com/users/${userData.githubUser}`,
-            { next: { revalidate: REVALIDATE_PERIOD } }
+            {
+                headers: { "Content-Type": "application/json" },
+                next: { revalidate: REVALIDATE_PERIOD }
+            }
         );
         if (!res.ok) {
             throw new Error(
@@ -71,7 +74,10 @@ export async function getGitProjects() {
     try {
         const res = await fetch(
             `https://api.github.com/search/repositories?q=user:${userData.githubUser}+fork:false&sort=updated&per_page=10&type=Repositories`,
-            { next: { revalidate: REVALIDATE_PERIOD } }
+            {
+                headers: { "Content-Type": "application/json" },
+                next: { revalidate: REVALIDATE_PERIOD }
+            }
         );
         if (!res.ok) {
             throw new Error(
