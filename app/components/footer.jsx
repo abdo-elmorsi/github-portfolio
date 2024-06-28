@@ -12,7 +12,7 @@ function Footer() {
           <div className="absolute top-0 h-[1px] w-1/2  bg-gradient-to-r from-transparent via-violet-500 to-transparent"></div>
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <p className="text-sm">
+          <p className="text-base">
             © GitHub Portfolio by <Link target="_blank" href={userData.linkedIn} className="text-primary-icon">{userData.devUsername}</Link>
           </p>
           <div className="flex items-center gap-5">

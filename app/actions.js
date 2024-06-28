@@ -26,7 +26,6 @@ export async function sendEmail({ name, email, message }) {
         });
         return { success: true };
     } catch (error) {
-        console.error("Error sending email:", error);
         return {
             success: false,
             error: "Failed to send email. Please try again later.",
@@ -65,7 +64,6 @@ export async function getGitProfile() {
         }
         return await res.json();
     } catch (error) {
-        console.error("Error fetching GitHub profile:", error);
         throw error;
     }
 }
@@ -86,7 +84,6 @@ export async function getGitProjects() {
         }
         return await res.json();
     } catch (error) {
-        console.error("Error fetching GitHub projects:", error);
         throw error;
     }
 }

@@ -85,7 +85,6 @@ export async function generateMetadata() {
             manifest: "/site.webmanifest",
         };
     } catch (error) {
-        console.error("Error fetching GitHub profile:", error);
         return {
             title: "Error",
             description: "An error occurred while fetching the GitHub profile.",

@@ -30,6 +30,7 @@ function HeroSection({ profile }) {
 
           <div className="w-full flex justify-center items-center gap-5">
             <Link
+              aria-label="github"
               href={profile.html_url}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -37,6 +38,7 @@ function HeroSection({ profile }) {
               <BsGithub size={24} />
             </Link>
             <Link
+              aria-label="linkedin"
               href={userData.linkedIn}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -44,6 +46,7 @@ function HeroSection({ profile }) {
               <BsLinkedin size={24} />
             </Link>
             <Link
+              aria-label="facebook"
               href={userData.facebook}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -51,6 +54,7 @@ function HeroSection({ profile }) {
               <FaFacebook size={24} />
             </Link>
             <Link
+              aria-label="leetCode"
               href={userData.leetcode}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -58,6 +62,7 @@ function HeroSection({ profile }) {
               <SiLeetcode size={24} />
             </Link>
             <Link
+              aria-label="twitter"
               href={`https://x.com/${profile.twitter_username}`}
               target='_blank'
               className="transition-all text-teal-500 hover:scale-125 duration-300"
@@ -66,7 +71,7 @@ function HeroSection({ profile }) {
             </Link>
           </div>
 
-          <div className="w-full justify-center flex items-center gap-3 mt-6">
+          <div className="w-full justify-center flex-wrap flex items-center gap-3 mt-6">
             <Button
               href={userData.resume}
               title="Get Resume">

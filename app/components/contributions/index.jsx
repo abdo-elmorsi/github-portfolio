@@ -16,6 +16,7 @@ function Contributions() {
 
       <div className="w-full flex justify-end py-4">
         <select
+          aria-label="select-year"
           value={year}
           onChange={handleYearChange}
           className="bg-gradient-to-r to-pink-500 from-violet-600 p-[1px] rounded-md transition-all duration-300 hover:from-pink-500 hover:to-violet-600 px-4 py-2 w-[150px] text-center">
