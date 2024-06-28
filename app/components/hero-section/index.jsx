@@ -72,6 +72,11 @@ function HeroSection({ profile }) {
               title="Get Resume">
               <MdDownload size={16} />
             </Button>
+            <Button
+              href={userData.rnVersion}
+              title="React Native version">
+              <MdDownload size={16} />
+            </Button>
           </div>
 
         </div>
