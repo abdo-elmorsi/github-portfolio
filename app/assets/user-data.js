@@ -8,7 +8,7 @@ export const userData = {
     // twitter: "https://x.com/abdo_elmorsii",
     stackOverflow: "https://stackoverflow.com/users/17125894/abdo-elmorsy",
     leetcode: "https://leetcode.com/abdo-elmorsi/",
-    resume: "https://drive.google.com/file/d/1kfM4Bvt8fO3L68BRt-H_pFgh-v9SNfk6/view?usp=sharing",
+    resume: "https://drive.google.com/file/d/13DVwUTmHb-4PXVmZWGJhC1sJkv3GS60P/view?usp=sharing",
     rnVersion: "https://drive.google.com/file/d/1G7BPTwcdvwA6P3urovZFW_wxqWb2S18u/view?usp=sharing",
     skills: [
         'React',
