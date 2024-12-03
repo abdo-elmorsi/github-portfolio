@@ -1,17 +1,36 @@
-"use client"
-import React from 'react'
-import Button from '../ui/button'
-import { BsSendFill } from 'react-icons/bs'
-import { useFormState } from "react-dom";
-import { handleSendEmail } from '@/app/actions';
-
+"use client";
+import React, { useState } from "react";
+import Button from "../ui/button";
+import { BsSendFill } from "react-icons/bs";
+import { handleSendEmail } from "@/app/actions";
 
 export default function ContactForm() {
-	const [message, formAction] = useFormState(handleSendEmail, { msg: "", success: true });
-	return (
-		<form action={formAction} className="w-full max-w-xl p-8 rounded-lg shadow-md flex flex-wrap justify-between">
-			<div className="mb-6 w-full md:w-[48%]">
+	const [message, setMessage] = useState({ msg: "", success: true });
+	const [loading, setLoading] = useState(false);
 
+	const formAction = async (formData) => {
+		setLoading(true);
+		try {
+			const response = await handleSendEmail(message, formData);
+
+			setMessage({ msg: "Message sent successfully!", success: true });
+		} catch (error) {
+			setMessage({ msg: "Failed to send message. Please try again.", success: false });
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<form
+			onSubmit={async (e) => {
+				e.preventDefault();
+				const formData = new FormData(e.target);
+				await formAction(formData);
+			}}
+			className="w-full max-w-xl p-8 rounded-lg shadow-md flex flex-wrap justify-between"
+		>
+			<div className="mb-6 w-full md:w-[48%]">
 				<label htmlFor="name" className="block text-gray-300 font-bold mb-2">
 					Your Name
 				</label>
@@ -32,7 +51,7 @@ export default function ContactForm() {
 					type="email"
 					id="email"
 					name="email"
-					placeholder="What's your web address?"
+					placeholder="What's your email address?"
 					className="w-full px-3 py-2 border rounded-md shadow-sm bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
 					required
 				/>
@@ -42,7 +61,6 @@ export default function ContactForm() {
 					Your Message
 				</label>
 				<textarea
-					type="message"
 					id="message"
 					name="message"
 					placeholder="What you want to say?"
@@ -50,13 +68,17 @@ export default function ContactForm() {
 					required
 				/>
 			</div>
-			<p className={`text-center w-full mt-2 ${message.success ? "text-green-500" : "text-red-500"}`}>{message.msg}</p>
+			<p
+				className={`text-center w-full mt-2 ${message.success ? "text-green-500" : "text-red-500"
+					}`}
+			>
+				{message.msg}
+			</p>
 			<div className="w-full justify-center flex items-center gap-3 mt-6">
-				<Button
-					title={false ? 'Sending...' : 'Send'}>
+				<Button title={loading ? "Sending..." : "Send"} disabled={loading}>
 					<BsSendFill size={16} />
 				</Button>
 			</div>
 		</form>
-	)
+	);
 }

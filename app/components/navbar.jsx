@@ -16,7 +16,7 @@ function Navbar({ name }) {
           <Link
             href="/"
             className=" text-primary-icon text-3xl font-bold">
-            @{name}
+            <h1>@{name}</h1>
           </Link>
         </div>
 
