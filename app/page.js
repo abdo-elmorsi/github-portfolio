@@ -52,11 +52,36 @@ export default async function Home() {
 export async function generateMetadata() {
     try {
         const profile = await getGitProfile();
-        
+
         const keywords = [
             "portfolio",
             "developer",
             "software engineer",
+            "React",
+            "React Native",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "MySQL",
+            "PostgreSQL",
+            "Next.js",
+            "Tailwind CSS",
+            "JavaScript",
+            "TypeScript",
+            "full stack developer",
+            "A",
+            "Morsi",
+            "Abdo",
+            "Abdo Elmorsi",
+            "Abdo Elmorsi Portfolio",
+            "Abdo Elmorsi GitHub",
+            "Abdo Elmorsi LinkedIn",
+            "Abdo Elmorsi Twitter",
+            "Abdelrahman Morsi",
+            "Abdelrahman Morsi Portfolio",
+            "Abdelrahman Morsi GitHub",
+            "Abdelrahman Morsi LinkedIn",
+            "Abdelrahman Morsi Twitter",
             profile.login,
             ...(profile.bio?.split(" ").filter((word) => word.length > 3) ||
                 []),
@@ -64,7 +89,7 @@ export async function generateMetadata() {
 
         return {
             title: `${profile.name} | Portfolio`,
-            description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+            description: `${profile.bio.slice(0, 150)} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
             keywords,
             authors: [{ name: profile.name }],
             creator: profile.name,
