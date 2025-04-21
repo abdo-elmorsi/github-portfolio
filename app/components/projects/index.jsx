@@ -5,10 +5,14 @@ import ProjectCard from './project-card';
 import Button from '../ui/button';
 
 const Projects = ({ projects, profile }) => {
-
   return (
-    <div id="projects" className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]">
-      <SectionTitle title="Git Projects" />
+    <section 
+      id="projects" 
+      className="relative z-50 border-t my-12 lg:my-24 border-[#25213b]"
+      aria-labelledby="projects-title"
+    >
+      <SectionTitle title="Git Projects" id="projects-title" />
+      <p className="sr-only">A collection of my GitHub projects showcasing my development skills and contributions</p>
 
       <div className="grid py-12 grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
         {
@@ -22,11 +26,14 @@ const Projects = ({ projects, profile }) => {
 
       <div className="w-full justify-center flex items-center">
         <Button
-          href={profile.html_url} title="View All Project">
+          href={profile.html_url} 
+          title="View All Projects"
+          aria-label="View all projects on GitHub"
+        >
           <FaLongArrowAltRight size={16} />
         </Button>
       </div>
-    </div>
+    </section>
   );
 };
 

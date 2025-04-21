@@ -16,7 +16,7 @@ function Navbar({ name }) {
           <Link
             href="/"
             className=" text-primary-icon text-3xl font-bold">
-            <h1>@{name}</h1>
+            <h2>@{name}</h2>
           </Link>
         </div>
         <ul className="mt-4 flex h-screen max-h-0 w-full flex-col items-start text-sm opacity-0 md:mt-0 md:h-auto md:max-h-screen md:w-auto md:flex-row md:space-x-1 md:border-0 md:opacity-100" id="navbar-default">

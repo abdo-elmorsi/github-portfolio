@@ -29,6 +29,7 @@ export default function ContactForm() {
 				await formAction(formData);
 			}}
 			className="w-full max-w-xl p-8 rounded-lg shadow-md flex flex-wrap justify-between"
+			aria-label="Contact form"
 		>
 			<div className="mb-6 w-full md:w-[48%]">
 				<label htmlFor="name" className="block text-gray-300 font-bold mb-2">
@@ -41,6 +42,7 @@ export default function ContactForm() {
 					placeholder="What's your good name?"
 					className="w-full px-3 py-2 border rounded-md shadow-sm bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
 					required
+					aria-required="true"
 				/>
 			</div>
 			<div className="mb-6 w-full md:w-[48%]">
@@ -54,6 +56,7 @@ export default function ContactForm() {
 					placeholder="What's your email address?"
 					className="w-full px-3 py-2 border rounded-md shadow-sm bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
 					required
+					aria-required="true"
 				/>
 			</div>
 			<div className="w-[100%]">
@@ -66,17 +69,23 @@ export default function ContactForm() {
 					placeholder="What you want to say?"
 					className="w-full px-3 py-2 border rounded-md shadow-sm bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
 					required
+					aria-required="true"
 				/>
 			</div>
-			<p
-				className={`text-center w-full mt-2 ${message.success ? "text-green-500" : "text-red-500"
-					}`}
+			<div
+				role="status"
+				aria-live="polite"
+				className={`text-center w-full mt-2 ${message.success ? "text-green-500" : "text-red-500"}`}
 			>
 				{message.msg}
-			</p>
+			</div>
 			<div className="w-full justify-center flex items-center gap-3 mt-6">
-				<Button title={loading ? "Sending..." : "Send"} disabled={loading}>
-					<BsSendFill size={16} />
+				<Button 
+					title={loading ? "Sending..." : "Send"} 
+					disabled={loading}
+					aria-label={loading ? "Sending message" : "Send message"}
+				>
+					<BsSendFill size={16} aria-hidden="true" />
 				</Button>
 			</div>
 		</form>

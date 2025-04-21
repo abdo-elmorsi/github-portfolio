@@ -8,12 +8,35 @@ import Contributions from "@/app/components/contributions";
 import Contact from "@/app/components/contact";
 import { getGitProfile, getGitProjects } from "./actions";
 
-
 export default async function Home() {
     const profile = await getGitProfile();
     const projects = await getGitProjects();
+
+    // Add structured data
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: profile.name,
+        description: profile.bio,
+        url: profile.blog,
+        sameAs: [
+            `https://github.com/${profile.login}`,
+            profile.twitter_username
+                ? `https://twitter.com/${profile.twitter_username}`
+                : null,
+            `https://www.facebook.com/abdoelmorsii`,
+            `https://www.instagram.com/abdoelmorsii`,
+        ].filter(Boolean),
+        image: profile.avatar_url,
+        jobTitle: profile.bio?.split(",")[0] || "Software Developer",
+    };
+
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Navbar name={profile.name} />
             <HeroSection profile={profile} />
             <GitStats />
@@ -29,14 +52,50 @@ export default async function Home() {
 export async function generateMetadata() {
     try {
         const profile = await getGitProfile();
+        
+        const keywords = [
+            "portfolio",
+            "developer",
+            "software engineer",
+            profile.login,
+            ...(profile.bio?.split(" ").filter((word) => word.length > 3) ||
+                []),
+        ].join(", ");
+
         return {
-            title: profile.name,
-            description: profile.bio,
+            title: `${profile.name} | Portfolio`,
+            description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+            keywords,
+            authors: [{ name: profile.name }],
+            creator: profile.name,
+            publisher: profile.name,
+            viewport: {
+                width: "device-width",
+                initialScale: 1,
+                maximumScale: 1,
+            },
             openGraph: {
                 type: "website",
                 url: profile.blog,
-                title: profile.name,
-                description: profile.bio,
+                title: `${profile.name} | Portfolio`,
+                description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+                siteName: `${profile.name}'s Portfolio`,
+                images: [
+                    {
+                        url: profile.avatar_url,
+                        width: 1200,
+                        height: 630,
+                        alt: profile.name,
+                    },
+                ],
+                locale: "en_US",
+            },
+            twitter: {
+                card: "summary_large_image",
+                site: `@${profile.twitter_username}`,
+                creator: `@${profile.twitter_username}`,
+                title: `${profile.name} | Portfolio`,
+                description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
                 images: [
                     {
                         url: profile.avatar_url,
@@ -46,22 +105,16 @@ export async function generateMetadata() {
                     },
                 ],
             },
-            twitter: {
-                card: "summary_large_image",
-                site: `@${profile.twitter_username}`,
-                title: profile.name,
-                description: profile.bio,
-                images: [
-                    {
-                        url: profile.avatar_url,
-                        width: 1200,
-                        height: 630,
-                    },
-                ],
-            },
             robots: {
                 index: true,
                 follow: true,
+                googleBot: {
+                    index: true,
+                    follow: true,
+                    "max-video-preview": -1,
+                    "max-image-preview": "large",
+                    "max-snippet": -1,
+                },
             },
             icons: [
                 {
@@ -83,6 +136,9 @@ export async function generateMetadata() {
                 },
             ],
             manifest: "/site.webmanifest",
+            alternates: {
+                canonical: profile.blog,
+            },
         };
     } catch (error) {
         return {
