@@ -88,8 +88,8 @@ export async function generateMetadata() {
         ].join(", ");
 
         return {
-            title: `${profile.name} | Portfolio`,
-            description: `${profile.bio.slice(0, 150)} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+            title: `${profile.name} | Full Stack Developer Portfolio`,
+            description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
             keywords,
             authors: [{ name: profile.name }],
             creator: profile.name,
@@ -103,7 +103,7 @@ export async function generateMetadata() {
                 type: "website",
                 url: profile.blog,
                 title: `${profile.name} | Portfolio`,
-                description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+                description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
                 siteName: `${profile.name}'s Portfolio`,
                 images: [
                     {
@@ -119,8 +119,8 @@ export async function generateMetadata() {
                 card: "summary_large_image",
                 site: `@${profile.twitter_username}`,
                 creator: `@${profile.twitter_username}`,
-                title: `${profile.name} | Portfolio`,
-                description: `${profile.bio} - ${profile.name}'s personal portfolio showcasing projects, skills, and contributions.`,
+                title: `${profile.name} | Full Stack Developer Portfolio`,
+                description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
                 images: [
                     {
                         url: profile.avatar_url,

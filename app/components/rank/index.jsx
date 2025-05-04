@@ -34,6 +34,7 @@ function Rank() {
             src={`https://stardev.io/developers/${userData.githubUser}/badge/languages/global.svg`}
             alt="github global"
             height={520}
+            title="Global Languages"
             className="rounded-lg w-full"
           />
           <img
@@ -41,6 +42,7 @@ function Rank() {
             src={`https://stardev.io/developers/${userData.githubUser}/badge/languages/locality.svg`}
             alt="github locality"
             height={520}
+            title="Locality Languages"
             className="rounded-lg w-full"
           />
         </>

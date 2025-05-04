@@ -24,6 +24,7 @@ function HeroSection({ profile }) {
               width={128}
               height={128}
               alt={`${profile.name}'s profile picture`}
+              title={`${profile.name}'s profile picture`}
               className="rounded-full transition-all duration-1000 grayscale hover:grayscale-0 hover:scale-110 cursor-pointer"
               priority
             />
