@@ -7,29 +7,13 @@ import Rank from "@/app/components/rank";
 import Contributions from "@/app/components/contributions";
 import Contact from "@/app/components/contact";
 import { getGitProfile, getGitProjects } from "./actions";
+import { generateSEO } from "@/utils";
 
 export default async function Home() {
     const profile = await getGitProfile();
     const projects = await getGitProjects();
 
-    // Add structured data
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: profile.name,
-        description: profile.bio,
-        url: profile.blog,
-        sameAs: [
-            `https://github.com/${profile.login}`,
-            profile.twitter_username
-                ? `https://twitter.com/${profile.twitter_username}`
-                : null,
-            `https://www.facebook.com/abdoelmorsii`,
-            `https://www.instagram.com/abdoelmorsii`,
-        ].filter(Boolean),
-        image: profile.avatar_url,
-        jobTitle: profile.bio?.split(",")[0] || "Software Developer",
-    };
+    const { jsonLd } = generateSEO(profile, projects.items);
 
     return (
         <>
@@ -52,119 +36,10 @@ export default async function Home() {
 export async function generateMetadata() {
     try {
         const profile = await getGitProfile();
+        const projects = await getGitProjects();
+        const { meta } = generateSEO(profile, projects.items);
 
-        const keywords = [
-            "portfolio",
-            "developer",
-            "software engineer",
-            "React",
-            "React Native",
-            "Node.js",
-            "Express",
-            "MongoDB",
-            "MySQL",
-            "PostgreSQL",
-            "Next.js",
-            "Tailwind CSS",
-            "JavaScript",
-            "TypeScript",
-            "full stack developer",
-            "A",
-            "Morsi",
-            "Abdo",
-            "Abdo Elmorsi",
-            "Abdo Elmorsi Portfolio",
-            "Abdo Elmorsi GitHub",
-            "Abdo Elmorsi LinkedIn",
-            "Abdo Elmorsi Twitter",
-            "Abdelrahman Morsi",
-            "Abdelrahman Morsi Portfolio",
-            "Abdelrahman Morsi GitHub",
-            "Abdelrahman Morsi LinkedIn",
-            "Abdelrahman Morsi Twitter",
-            profile.login,
-            ...(profile.bio?.split(" ").filter((word) => word.length > 3) ||
-                []),
-        ].join(", ");
-
-        return {
-            title: `${profile.name} | Full Stack Developer Portfolio`,
-            description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
-            keywords,
-            authors: [{ name: profile.name }],
-            creator: profile.name,
-            publisher: profile.name,
-            viewport: {
-                width: "device-width",
-                initialScale: 1,
-                maximumScale: 1,
-            },
-            openGraph: {
-                type: "website",
-                url: profile.blog,
-                title: `${profile.name} | Portfolio`,
-                description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
-                siteName: `${profile.name}'s Portfolio`,
-                images: [
-                    {
-                        url: profile.avatar_url,
-                        width: 1200,
-                        height: 630,
-                        alt: profile.name,
-                    },
-                ],
-                locale: "en_US",
-            },
-            twitter: {
-                card: "summary_large_image",
-                site: `@${profile.twitter_username}`,
-                creator: `@${profile.twitter_username}`,
-                title: `${profile.name} | Full Stack Developer Portfolio`,
-                description: `${profile.bio} - ${profile.name}'s`.slice(0, 150),
-                images: [
-                    {
-                        url: profile.avatar_url,
-                        width: 1200,
-                        height: 630,
-                        alt: profile.name,
-                    },
-                ],
-            },
-            robots: {
-                index: true,
-                follow: true,
-                googleBot: {
-                    index: true,
-                    follow: true,
-                    "max-video-preview": -1,
-                    "max-image-preview": "large",
-                    "max-snippet": -1,
-                },
-            },
-            icons: [
-                {
-                    rel: "icon",
-                    type: "image/png",
-                    sizes: "32x32",
-                    url: "/favicon-32x32.png",
-                },
-                {
-                    rel: "icon",
-                    type: "image/png",
-                    sizes: "16x16",
-                    url: "/favicon-16x16.png",
-                },
-                {
-                    rel: "apple-touch-icon",
-                    sizes: "180x180",
-                    url: "/apple-touch-icon.png",
-                },
-            ],
-            manifest: "/site.webmanifest",
-            alternates: {
-                canonical: profile.blog,
-            },
-        };
+        return meta;
     } catch (error) {
         return {
             title: "Error",

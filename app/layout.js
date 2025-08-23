@@ -1,4 +1,3 @@
-import { GoogleTagManager } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 
 import { Inter } from "next/font/google";
@@ -23,9 +22,6 @@ export default function RootLayout({ children }) {
                 <Footer />
                 <Analytics />
             </body>
-            {process.env.NEXT_PUBLIC_GTM && (
-                <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM} />
-            )}
         </html>
     );
 }
