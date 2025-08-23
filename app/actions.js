@@ -4,9 +4,6 @@ import nodemailer from "nodemailer";
 import { userData } from "@/app/assets/user-data";
 import { template } from "@/app/assets/email-template";
 
-// Revalidate every 1 day (86400 seconds)
-const REVALIDATE_PERIOD = 60 * 60;
-
 export async function sendEmail({ name, email, message }) {
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -48,42 +45,24 @@ export async function handleSendEmail(currentState, formData) {
     }
 }
 
-export async function getGitProfile() {
-    try {
-        const res = await fetch(
-            `https://api.github.com/users/${userData.githubUser}`,
-            {
-                headers: { "Content-Type": "application/json" },
-                next: { revalidate: REVALIDATE_PERIOD },
-            }
-        );
-        if (!res.ok) {
-            throw new Error(
-                `Failed to fetch data: ${res.status} ${res.statusText}`
-            );
-        }
-        return await res.json();
-    } catch (error) {
-        throw error;
-    }
+const BASE_URL = "https://api.github.com";
+
+async function fetchFromGitHub(endpoint) {
+    const res = await fetch(`${BASE_URL}${endpoint}`, {
+        headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok)
+        throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
+    return res.json();
 }
 
-export async function getGitProjects() {
-    try {
-        const res = await fetch(
-            `https://api.github.com/search/repositories?q=user:${userData.githubUser}+fork:false&sort=updated&per_page=10&type=Repositories`,
-            {
-                headers: { "Content-Type": "application/json" },
-                next: { revalidate: REVALIDATE_PERIOD },
-            }
-        );
-        if (!res.ok) {
-            throw new Error(
-                `Failed to fetch data: ${res.status} ${res.statusText}`
-            );
-        }
-        return await res.json();
-    } catch (error) {
-        throw error;
-    }
+export async function getGitProfile(username) {
+    return await fetchFromGitHub(`/users/${username}`);
+}
+
+export async function getGitProjects(username, perPage = 10) {
+    return await fetchFromGitHub(
+        `/search/repositories?q=user:${username}+fork:false&sort=updated&per_page=${perPage}&type=Repositories`
+    );
 }
