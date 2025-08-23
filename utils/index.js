@@ -72,10 +72,13 @@ export function generateSEO(profile, projects = []) {
         jobTitle: profile.bio?.split(",")[0] || "Software Developer",
     };
 
+    const shortTitle = `${profile.name} | Full Stack Developer`; // ✅ under 60 chars
+    const arabicTitle = "بورتفوليو عبدالرحمن المرسي"; // ✅ short Arabic version
+
     const meta = {
-        title: `${profile.name} | Full Stack Developer Portfolio | بورتفوليو عبدالرحمن المرسي`,
+        title: `${shortTitle} | ${arabicTitle}`, // ✅ fits in 70–75 chars
         description:
-            `${profile.bio} - ${profile.name}'s portfolio | بورتفوليو عبدالرحمن المرسي`.slice(
+            `${profile.bio} - ${profile.name}'s portfolio | ${arabicTitle}`.slice(
                 0,
                 150
             ),
@@ -91,13 +94,13 @@ export function generateSEO(profile, projects = []) {
         openGraph: {
             type: "website",
             url: profile.blog,
-            title: `${profile.name} | Portfolio | بورتفوليو`,
+            title: `${shortTitle} | ${arabicTitle}`,
             description:
                 `${profile.bio} - ${profile.name}'s portfolio | بورتفوليو`.slice(
                     0,
                     150
                 ),
-            siteName: `${profile.name}'s Portfolio`,
+            siteName: `${profile.name} Portfolio`,
             images: [
                 {
                     url: profile.avatar_url,
@@ -117,7 +120,7 @@ export function generateSEO(profile, projects = []) {
             creator: profile.twitter_username
                 ? `@${profile.twitter_username}`
                 : undefined,
-            title: `${profile.name} | Full Stack Developer | مطور برمجيات`,
+            title: `${shortTitle} | مطور برمجيات`, // shorter Twitter title
             description:
                 `${profile.bio} - ${profile.name}'s portfolio | بورتفوليو`.slice(
                     0,
