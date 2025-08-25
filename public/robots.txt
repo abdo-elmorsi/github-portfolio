@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Block unnecessary Next.js build/static files
+Disallow: /_next/
+Disallow: /static/
+Disallow: /api/
+
+# Prevent crawling of sensitive or duplicate pages (if you have them)
+Disallow: /404
+Disallow: /500
+
+# Sitemap
 Sitemap: https://elmorsi.vercel.app/sitemap.xml

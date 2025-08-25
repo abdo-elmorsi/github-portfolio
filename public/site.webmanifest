@@ -1,20 +1,54 @@
 {
-  "name": "Abdelrahman Elmorsi",
-  "short_name": "Abdo Elmorsi",
-  "icons": [
-    {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "start_url": "/"
+    "name": "Abdelrahman Elmorsi | Full Stack Developer Portfolio",
+    "short_name": "Elmorsi",
+    "description": "Portfolio of Abdelrahman Elmorsi, a Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies.",
+    "lang": "en",
+    "dir": "ltr",
+    "start_url": "/?source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#0d1117",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Portfolio",
+            "short_name": "Work",
+            "description": "View my portfolio projects",
+            "url": "/#projects",
+            "icons": [{ "src": "/icons/work.png", "sizes": "96x96" }]
+        },
+        {
+            "name": "Contact",
+            "short_name": "Contact",
+            "description": "Get in touch with me",
+            "url": "/#contact",
+            "icons": [{ "src": "/icons/contact.png", "sizes": "96x96" }]
+        }
+    ]
 }
