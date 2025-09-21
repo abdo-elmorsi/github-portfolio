@@ -56,21 +56,75 @@ export default async function Home() {
 }
 
 export async function generateMetadata() {
+    const FALLBACK_DATA = {
+        title: "Abdelrahman Morsi | Full Stack Developer",
+        description:
+            "Portfolio of Abdelrahman Morsi - Full Stack Developer specializing in React, React Native, and Node.js",
+        canonical: "https://elmorsi.vercel.app",
+    };
+
     try {
-        // Run metadata fetch in parallel
-        const [profile, projects] = await Promise.all([
+        const [profile, projects] = await Promise.allSettled([
             getGitProfile(userData.githubUser),
             getGitProjects(userData.githubUser),
         ]);
 
-        const { meta } = generateSEO(profile, projects.items);
-        return meta;
-    } catch (error) {
-        console.error("Error generating metadata:", error);
+        // Handle partial failures
+        const profileData =
+            profile.status === "fulfilled" ? profile.value : null;
+        const projectsData =
+            projects.status === "fulfilled" ? projects.value : { items: [] };
+
+        if (!profileData) {
+            console.warn(
+                "GitHub profile data unavailable, using fallback metadata"
+            );
+            return {
+                title: FALLBACK_DATA.title,
+                description: FALLBACK_DATA.description,
+                alternates: {
+                    canonical: FALLBACK_DATA.canonical,
+                    languages: {
+                        en: `${FALLBACK_DATA.canonical}/en`,
+                        ar: `${FALLBACK_DATA.canonical}/ar`,
+                    },
+                },
+            };
+        }
+
+        const { meta, jsonLd } = generateSEO(profileData, projectsData.items);
 
         return {
-            title: "Error",
-            description: "An error occurred while fetching the GitHub profile.",
+            ...meta,
+            alternates: {
+                canonical: profileData.blog || FALLBACK_DATA.canonical,
+                languages: {
+                    en: profileData.blog
+                        ? `${profileData.blog}/en`
+                        : `${FALLBACK_DATA.canonical}/en`,
+                    ar: profileData.blog
+                        ? `${profileData.blog}/ar`
+                        : `${FALLBACK_DATA.canonical}/ar`,
+                },
+            },
+            other: {
+                jsonld: JSON.stringify(jsonLd),
+            },
+        };
+    } catch (error) {
+        console.error("Critical error generating metadata:", error);
+
+        return {
+            title: "Abdelrahman Morsi | Portfolio",
+            description:
+                "Full Stack Developer specializing in modern web technologies",
+            alternates: {
+                canonical: FALLBACK_DATA.canonical,
+                languages: {
+                    en: `${FALLBACK_DATA.canonical}/en`,
+                    ar: `${FALLBACK_DATA.canonical}/ar`,
+                },
+            },
         };
     }
 }
