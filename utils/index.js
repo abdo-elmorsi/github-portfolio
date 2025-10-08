@@ -1,34 +1,66 @@
 // utils/generateSEO.js
+// ✅ Enhanced bilingual SEO metadata generator
+// Covers all Arabic and English name variants for stronger search visibility
+// Includes JSON-LD, OpenGraph, Twitter cards, alternate languages, and verified metadata.
 
-// Consolidated and improved SEO metadata generator.
-// Merges the older `seo.js` and the existing `generateSEO` implementation
-// to provide bilingual titles/descriptions, prioritized keywords, structured
-// JSON-LD, Open Graph, Twitter cards, alternates, icons, and safe fallbacks.
 export const generateSEO = (profile = {}, projects = []) => {
     // --- safe defaults/fallbacks ---
     const fullName = profile?.name || "Abdelrahman (Abdo) Elmorsi";
     const username = profile?.login || "elmorsi";
     const defaultBlog = "https://elmorsi.vercel.app";
     const profileBlog = profile?.blog || defaultBlog;
-    const profileBio = profile?.bio || "Full Stack Developer specializing in React, React Native, and Node.js.";
+    const profileBio =
+        profile?.bio ||
+        "Full Stack Developer specializing in React, React Native, and Node.js.";
     const avatarUrl = profile?.avatar_url || "https://placehold.co/1200x630";
 
     // --- name variants for broader coverage ---
     const englishNameVariants = [
         "Abdelrahman Elmorsi",
         "Abdelrahman Morsi",
+        "Abdelrahman Elmorsy",
+        "Abdelrahman Morsy",
+        "Abdelrahman Ahmed",
+        "Abdelrahman Ahmed Elmorsi",
+        "Abdelrahman Ahmed Morsi",
+        "Abdelrahman Ahmed Elmorsy",
+        "Abdelrahman Ahmed Morsy",
+        "Abdelrahman El Morsi",
         "Abdo Elmorsi",
+        "Abdo Ahmed",
         "Abdo Morsi",
+        "Abdu Elmorsi",
+        "Abdu Morsi",
         "A. Elmorsi",
         "A. Morsi",
+        "Elmorsi",
+        "Morsi",
+        "Abdelrahman El Morsy",
+        "Abdelrahman El-Morsi",
+        "Abdo El-Morsi",
     ];
 
     const arabicNameVariants = [
         "عبدالرحمن المرسي",
-        "عبده المرسي",
-        "عبده مرسى",
-        "عبده المرسى",
+        "عبد الرحمن المرسي",
         "عبدالرحمن المرسى",
+        "عبد الرحمن المرسى",
+        "عبدالرحمن أحمد",
+        "عبدالرحمن أحمد المرسي",
+        "عبدالرحمن أحمد المرسى",
+        "عبده المرسي",
+        "عبده المرسى",
+        "عبده مرسي",
+        "عبده مرسى",
+        "عبده أحمد المرسي",
+        "عبده أحمد المرسى",
+        "عبده أحمد",
+        "عبد الرحمن مرسي",
+        "عبد الرحمن مرسى",
+        "عبدالرحمن مرسي",
+        "عبدالرحمن مرسى",
+        "عبدالرحمن العمراني",
+        "عبده العمراني",
     ];
 
     // --- keywords: merge, dedupe, include profile bio tokens and project names ---
@@ -79,18 +111,20 @@ export const generateSEO = (profile = {}, projects = []) => {
         "تايلويند سي اس اس",
     ];
 
-    // build final keywords string (dedupe, limit)
-    const combinedKeywords = [...new Set([...(englishKeywords || []), ...(arabicKeywords || [])])]
-        .slice(0, 40)
+    // build final keywords string (dedupe, limit expanded for SEO)
+    const combinedKeywords = [
+        ...new Set([...(englishKeywords || []), ...(arabicKeywords || [])]),
+    ]
+        .slice(0, 100)
         .filter(Boolean);
     const keywords = combinedKeywords.join(", ");
 
     // --- bilingual descriptions and titles ---
-    const fullDescription = `${profileBio} | Portfolio of ${fullName} | عبده المرسي — Full Stack Developer specializing in React, React Native, and Node.js.`;
+    const fullDescription = `${profileBio} | Portfolio of ${fullName} | عبده المرسي — مطور فول ستاك متخصص في React, React Native, و Node.js.`;
     const shortTitle = `${fullName} | Full Stack Developer`;
     const arabicTitle = `بورتفوليو ${arabicNameVariants[0]} | مطور برمجيات`;
 
-    // Ensure metadataBase is a valid URL (Next.js app metadata sometimes expects a URL instance)
+    // Ensure metadataBase is a valid URL
     let metadataBase;
     try {
         metadataBase = new URL(profileBlog);
@@ -137,8 +171,12 @@ export const generateSEO = (profile = {}, projects = []) => {
         },
         twitter: {
             card: "summary_large_image",
-            site: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
-            creator: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
+            site: profile?.twitter_username
+                ? `@${profile.twitter_username}`
+                : "@abdoelmorsii",
+            creator: profile?.twitter_username
+                ? `@${profile.twitter_username}`
+                : "@abdoelmorsii",
             title: `${shortTitle} | مطور برمجيات`,
             description: fullDescription.substring(0, 160),
             images: [ogImage],
@@ -162,7 +200,9 @@ export const generateSEO = (profile = {}, projects = []) => {
                 { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
                 { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
             ],
-            apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+            apple: [
+                { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+            ],
         },
         manifest: "/site.webmanifest",
         verification: {
@@ -183,8 +223,10 @@ export const generateSEO = (profile = {}, projects = []) => {
     const sameAs = [
         `https://github.com/${username}`,
         profile?.blog || null,
-        profile?.twitter_username ? `https://twitter.com/${profile.twitter_username}` : null,
-        profile?.linkedin ? profile.linkedin : null,
+        profile?.twitter_username
+            ? `https://twitter.com/${profile.twitter_username}`
+            : null,
+        profile?.linkedin || null,
     ].filter(Boolean);
 
     const jsonLd = {
@@ -192,12 +234,21 @@ export const generateSEO = (profile = {}, projects = []) => {
         "@type": "Person",
         name: fullName,
         alternateName: [...englishNameVariants, ...arabicNameVariants],
-        jobTitle: profileBio.split(/[.,]/)[0]?.trim() || "Full Stack Developer",
+        jobTitle:
+            profileBio.split(/[.,]/)[0]?.trim() || "Full Stack Developer",
         description: (profileBio || fullDescription).substring(0, 300),
         url: profileBlog,
         image: avatarUrl,
         sameAs,
-        knowsAbout: ["React", "React Native", "Node.js", "JavaScript", "Next.js", "Web Development", "Mobile Development"],
+        knowsAbout: [
+            "React",
+            "React Native",
+            "Node.js",
+            "JavaScript",
+            "Next.js",
+            "Web Development",
+            "Mobile Development",
+        ],
         worksFor: {
             "@type": "Organization",
             name: profile?.company || "Freelance / Remote",
