@@ -105,7 +105,7 @@ export const generateSEO = (profile = {}, projects = []) => {
     const meta = {
         metadataBase,
         title: `${shortTitle} | ${arabicTitle}`,
-        description: fullDescription.substring(0, 320),
+        description: fullDescription.substring(0, 160),
         keywords,
         authors: [{ name: fullName }, { name: arabicNameVariants[0] }],
         creator: fullName,
@@ -121,7 +121,7 @@ export const generateSEO = (profile = {}, projects = []) => {
             type: "website",
             url: profileBlog,
             title: `${shortTitle} | ${arabicTitle}`,
-            description: fullDescription.substring(0, 320),
+            description: fullDescription.substring(0, 160),
             siteName: `${fullName} Portfolio`,
             images: [
                 {
@@ -140,7 +140,7 @@ export const generateSEO = (profile = {}, projects = []) => {
             site: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
             creator: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
             title: `${shortTitle} | مطور برمجيات`,
-            description: fullDescription.substring(0, 320),
+            description: fullDescription.substring(0, 160),
             images: [ogImage],
         },
         robots: {
