@@ -1,3 +1,4 @@
+// app/page.js
 import Navbar from "@/app/components/navbar";
 import HeroSection from "@/app/components/hero-section";
 import GitStats from "@/app/components/stats";
@@ -14,18 +15,16 @@ export const revalidate = 86400; // 1 day
 
 export default async function Home() {
     try {
-        // Run requests in parallel for performance
         const [profile, projects] = await Promise.all([
             getGitProfile(userData.githubUser),
             getGitProjects(userData.githubUser),
         ]);
 
-        // Generate SEO schema
         const { jsonLd } = generateSEO(profile, projects.items);
 
         return (
             <>
-                {/* SEO structured data */}
+                {/* JSON-LD structured data */}
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -44,7 +43,6 @@ export default async function Home() {
         );
     } catch (error) {
         console.error("Error loading home page data:", error);
-
         return (
             <div className="flex h-screen items-center justify-center text-center">
                 <p className="text-lg font-semibold text-red-500">
@@ -57,9 +55,9 @@ export default async function Home() {
 
 export async function generateMetadata() {
     const FALLBACK_DATA = {
-        title: "Abdelrahman Morsi | Full Stack Developer",
+        title: "Abdelrahman (Abdo) Elmorsi | عبده المرسي | Full Stack Developer",
         description:
-            "Portfolio of Abdelrahman Morsi - Full Stack Developer specializing in React, React Native, and Node.js",
+            "Portfolio of Abdelrahman (Abdo) Elmorsi | عبده المرسي — Full Stack Developer specializing in React, React Native, and Node.js",
         canonical: "https://elmorsi.vercel.app",
     };
 
@@ -69,16 +67,12 @@ export async function generateMetadata() {
             getGitProjects(userData.githubUser),
         ]);
 
-        // Handle partial failures
         const profileData =
             profile.status === "fulfilled" ? profile.value : null;
         const projectsData =
             projects.status === "fulfilled" ? projects.value : { items: [] };
 
         if (!profileData) {
-            console.warn(
-                "GitHub profile data unavailable, using fallback metadata"
-            );
             return {
                 title: FALLBACK_DATA.title,
                 description: FALLBACK_DATA.description,
@@ -113,11 +107,9 @@ export async function generateMetadata() {
         };
     } catch (error) {
         console.error("Critical error generating metadata:", error);
-
         return {
-            title: "Abdelrahman Morsi | Portfolio",
-            description:
-                "Full Stack Developer specializing in modern web technologies",
+            title: FALLBACK_DATA.title,
+            description: FALLBACK_DATA.description,
             alternates: {
                 canonical: FALLBACK_DATA.canonical,
                 languages: {

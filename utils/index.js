@@ -1,53 +1,68 @@
-// utils/seo.js
-export function generateSEO(profile, projects = []) {
-    // Default values for fallback
-    const defaultName = "Abdelrahman Morsi";
-    const defaultBio =
-        "Full Stack Developer specializing in React, React Native, and Node.js";
+// utils/generateSEO.js
+
+// Consolidated and improved SEO metadata generator.
+// Merges the older `seo.js` and the existing `generateSEO` implementation
+// to provide bilingual titles/descriptions, prioritized keywords, structured
+// JSON-LD, Open Graph, Twitter cards, alternates, icons, and safe fallbacks.
+export const generateSEO = (profile = {}, projects = []) => {
+    // --- safe defaults/fallbacks ---
+    const fullName = profile?.name || "Abdelrahman (Abdo) Elmorsi";
+    const username = profile?.login || "elmorsi";
     const defaultBlog = "https://elmorsi.vercel.app";
-
-    const profileName = profile?.name || defaultName;
-    const profileBio = profile?.bio || defaultBio;
     const profileBlog = profile?.blog || defaultBlog;
-    const profileLogin = profile?.login || "abdoelmorsi";
-    const avatarUrl = profile?.avatar_url || "/default-avatar.png";
+    const profileBio = profile?.bio || "Full Stack Developer specializing in React, React Native, and Node.js.";
+    const avatarUrl = profile?.avatar_url || "https://placehold.co/1200x630";
 
-    // 🔹 English Keywords with prioritization
-    const englishKeywords = [
-        // Primary keywords
-        "portfolio",
-        "developer",
-        "software engineer",
-        "full stack developer",
-        // Technologies
-        "React",
-        "React Native",
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "MySQL",
-        "PostgreSQL",
-        "Next.js",
-        "Tailwind CSS",
-        "JavaScript",
-        "TypeScript",
-        "Web Development",
-        // Personal identifiers
-        "Abdo",
-        "A. Morsi",
-        "Abdo Elmorsi",
+    // --- name variants for broader coverage ---
+    const englishNameVariants = [
+        "Abdelrahman Elmorsi",
         "Abdelrahman Morsi",
-        profileLogin,
-        // Bio keywords (filter meaningful words)
-        ...(profileBio
-            ?.split(" ")
-            .filter((word) => word.length > 3 && !word.includes("@")) || []),
-        // Project names (limit to top 5)
-        ...projects.slice(0, 5).map((p) => p.name),
+        "Abdo Elmorsi",
+        "Abdo Morsi",
+        "A. Elmorsi",
+        "A. Morsi",
     ];
 
-    // 🔹 Arabic Keywords
+    const arabicNameVariants = [
+        "عبدالرحمن المرسي",
+        "عبده المرسي",
+        "عبده مرسى",
+        "عبده المرسى",
+        "عبدالرحمن المرسى",
+    ];
+
+    // --- keywords: merge, dedupe, include profile bio tokens and project names ---
+    const bioKeywords = (profileBio || "")
+        .split(/\s+/)
+        .map((w) => w.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ""))
+        .filter((w) => w.length > 3 && !w.includes("@"));
+
+    const projectNames = Array.isArray(projects)
+        ? projects.slice(0, 8).map((p) => p?.name).filter(Boolean)
+        : [];
+
+    const englishKeywords = [
+        ...englishNameVariants,
+        "Full Stack Developer",
+        "React Developer",
+        "React Native Developer",
+        "Node.js Developer",
+        "JavaScript Developer",
+        "Frontend Developer",
+        "Backend Developer",
+        "Software Engineer",
+        "Portfolio",
+        "Elmorsi Portfolio",
+        "Next.js",
+        "Tailwind CSS",
+        "TypeScript",
+        username,
+        ...bioKeywords,
+        ...projectNames,
+    ];
+
     const arabicKeywords = [
+        ...arabicNameVariants,
         "بورتفوليو",
         "مطور",
         "مهندس برمجيات",
@@ -60,87 +75,41 @@ export function generateSEO(profile, projects = []) {
         "ريأكت",
         "ريأكت نيتيف",
         "نود جي اس",
-        "اكسبريس",
-        "مونجو دي بي",
-        "ماي اس كيو ال",
-        "بوستجري اس كيو ال",
         "نكست جي اس",
         "تايلويند سي اس اس",
-        "عبدالرحمن المرسي",
-        "عبده المرسي",
-        "سيرة ذاتية للمطور",
-        "مطور مواقع",
-        "مطور برمجيات في مصر",
-        "مصمم واجهات مستخدم",
     ];
 
-    // Remove duplicates and limit keywords for better SEO
-    const keywords = [
-        ...new Set([
-            ...englishKeywords.filter(Boolean),
-            ...arabicKeywords.filter(Boolean),
-        ]),
-    ]
-        .slice(0, 30)
-        .join(", ");
+    // build final keywords string (dedupe, limit)
+    const combinedKeywords = [...new Set([...(englishKeywords || []), ...(arabicKeywords || [])])]
+        .slice(0, 40)
+        .filter(Boolean);
+    const keywords = combinedKeywords.join(", ");
 
-    // 🔹 Structured Data (JSON-LD) with enhanced schema
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: profileName,
-        alternateName: ["عبدالرحمن المرسي", "Abdo Elmorsi"],
-        description: profileBio.substring(0, 200),
-        url: profileBlog,
-        sameAs: [
-            `https://github.com/${profileLogin}`,
-            profile?.twitter_username
-                ? `https://twitter.com/${profile.twitter_username}`
-                : null,
-            "https://www.facebook.com/abdoelmorsii",
-            "https://www.instagram.com/abdoelmorsii",
-            "https://www.linkedin.com/in/abdelrahman-a-morsi-163263205/",
-            profileBlog,
-        ].filter(Boolean),
-        image: avatarUrl,
-        jobTitle: profileBio.split(",")[0]?.trim() || "Full Stack Developer",
-        worksFor: {
-            "@type": "Organization",
-            name: "Freelance Developer",
-        },
-        knowsAbout: [
-            "Web Development",
-            "React",
-            "Node.js",
-            "JavaScript",
-            "TypeScript",
-            "Mobile App Development",
-        ],
-    };
+    // --- bilingual descriptions and titles ---
+    const fullDescription = `${profileBio} | Portfolio of ${fullName} | عبده المرسي — Full Stack Developer specializing in React, React Native, and Node.js.`;
+    const shortTitle = `${fullName} | Full Stack Developer`;
+    const arabicTitle = `بورتفوليو ${arabicNameVariants[0]} | مطور برمجيات`;
 
-    // 🔹 Titles and descriptions
-    const shortTitle = `${profileName} | Full Stack Developer`;
-    const arabicTitle = "بورتفوليو عبدالرحمن المرسي | مطور برمجيات";
+    // Ensure metadataBase is a valid URL (Next.js app metadata sometimes expects a URL instance)
+    let metadataBase;
+    try {
+        metadataBase = new URL(profileBlog);
+    } catch (e) {
+        metadataBase = new URL(defaultBlog);
+    }
 
-    const descriptionText =
-        `${profileBio} - ${profileName}'s portfolio showcasing projects and skills`.substring(
-            0,
-            155
-        );
-    const arabicDescription =
-        `بورتفوليو ${profileName} يعرض مشاريع وتجارب مطور برمجيات محترف`.substring(
-            0,
-            155
-        );
+    // --- OpenGraph & Twitter image ---
+    const ogImage = profile?.twitter_banner || avatarUrl;
 
+    // --- assemble meta object used by Next.js / HTML head ---
     const meta = {
-        metadataBase: new URL(profileBlog),
+        metadataBase,
         title: `${shortTitle} | ${arabicTitle}`,
-        description: `${descriptionText} | ${arabicDescription}`,
+        description: fullDescription.substring(0, 320),
         keywords,
-        authors: [{ name: profileName }, { name: "عبدالرحمن المرسي" }],
-        creator: profileName,
-        publisher: profileName,
+        authors: [{ name: fullName }, { name: arabicNameVariants[0] }],
+        creator: fullName,
+        publisher: fullName,
         formatDetection: {
             telephone: false,
             date: false,
@@ -149,40 +118,30 @@ export function generateSEO(profile, projects = []) {
             url: false,
         },
         openGraph: {
-            type: "profile",
+            type: "website",
             url: profileBlog,
             title: `${shortTitle} | ${arabicTitle}`,
-            description: `${descriptionText} | ${arabicDescription}`,
-            siteName: `${profileName} Portfolio`,
+            description: fullDescription.substring(0, 320),
+            siteName: `${fullName} Portfolio`,
             images: [
                 {
-                    url: avatarUrl,
+                    url: ogImage,
                     width: 1200,
                     height: 630,
-                    alt: `${profileName} | عبدالرحمن المرسي - Full Stack Developer`,
+                    alt: `${fullName} Portfolio`,
                     type: "image/jpeg",
                 },
             ],
             locale: "en_US",
             alternateLocale: "ar_EG",
-            profile: {
-                firstName: "Abdelrahman",
-                lastName: "Morsi",
-                username: profileLogin,
-                gender: "male",
-            },
         },
         twitter: {
             card: "summary_large_image",
-            site: profile?.twitter_username
-                ? `@${profile.twitter_username}`
-                : "@abdoelmorsii",
-            creator: profile?.twitter_username
-                ? `@${profile.twitter_username}`
-                : "@abdoelmorsii",
+            site: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
+            creator: profile?.twitter_username ? `@${profile.twitter_username}` : "@abdoelmorsii",
             title: `${shortTitle} | مطور برمجيات`,
-            description: `${descriptionText} | ${arabicDescription}`,
-            images: [avatarUrl],
+            description: fullDescription.substring(0, 320),
+            images: [ogImage],
         },
         robots: {
             index: true,
@@ -200,24 +159,10 @@ export function generateSEO(profile, projects = []) {
         icons: {
             icon: [
                 { url: "/favicon.ico" },
-                {
-                    url: "/favicon-16x16.png",
-                    sizes: "16x16",
-                    type: "image/png",
-                },
-                {
-                    url: "/favicon-32x32.png",
-                    sizes: "32x32",
-                    type: "image/png",
-                },
+                { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+                { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
             ],
-            apple: [
-                {
-                    url: "/apple-touch-icon.png",
-                    sizes: "180x180",
-                    type: "image/png",
-                },
-            ],
+            apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
         },
         manifest: "/site.webmanifest",
         verification: {
@@ -234,5 +179,39 @@ export function generateSEO(profile, projects = []) {
         category: "technology",
     };
 
+    // --- JSON-LD structured data ---
+    const sameAs = [
+        `https://github.com/${username}`,
+        profile?.blog || null,
+        profile?.twitter_username ? `https://twitter.com/${profile.twitter_username}` : null,
+        profile?.linkedin ? profile.linkedin : null,
+    ].filter(Boolean);
+
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: fullName,
+        alternateName: [...englishNameVariants, ...arabicNameVariants],
+        jobTitle: profileBio.split(/[.,]/)[0]?.trim() || "Full Stack Developer",
+        description: (profileBio || fullDescription).substring(0, 300),
+        url: profileBlog,
+        image: avatarUrl,
+        sameAs,
+        knowsAbout: ["React", "React Native", "Node.js", "JavaScript", "Next.js", "Web Development", "Mobile Development"],
+        worksFor: {
+            "@type": "Organization",
+            name: profile?.company || "Freelance / Remote",
+        },
+        hasPart: Array.isArray(projects)
+            ? projects.slice(0, 10).map((project) => ({
+                  "@type": "SoftwareSourceCode",
+                  name: project?.name,
+                  description: project?.description,
+                  url: project?.html_url || project?.url,
+                  programmingLanguage: project?.language || "JavaScript",
+              }))
+            : undefined,
+    };
+
     return { meta, jsonLd };
-}
+};

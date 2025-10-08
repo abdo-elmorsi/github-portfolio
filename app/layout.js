@@ -1,10 +1,16 @@
 import { Analytics } from "@vercel/analytics/react";
-
 import { Inter } from "next/font/google";
 import Footer from "./components/footer";
 import "@/css/card.scss";
 import "@/css/globals.scss";
+
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+    title: "Abdelrahman (Abdo) Elmorsi | عبده المرسي | Full Stack Developer",
+    description:
+        "Full Stack Developer specializing in React, React Native, and Node.js | عبده المرسي - مطور فول ستاك متخصص في تطوير الويب والتطبيقات.",
+};
 
 export default function RootLayout({ children }) {
     return (
@@ -14,6 +20,7 @@ export default function RootLayout({ children }) {
                     {children}
                 </main>
                 <Footer />
+
                 <Analytics />
             </body>
         </html>
